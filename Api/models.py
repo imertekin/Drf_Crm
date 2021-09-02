@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from Api import utility
 
@@ -36,6 +37,9 @@ class Agent(models.Model):
 class Products(models.Model):
 
     name=models.CharField(max_length=20,verbose_name='Name')
+    department=models.CharField(max_length=3,choices=utility.DEPARTMENT,verbose_name='Department',default='GS')
+    add_date=models.DateField(default=timezone.now)    
+
 
 
 

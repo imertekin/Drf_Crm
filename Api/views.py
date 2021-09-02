@@ -1,12 +1,18 @@
 
 
+from django.db.models import query
+from django.views.generic.base import View
 from rest_framework import generics, serializers
+from rest_framework import response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets,mixins
 
-from Api.serializers import LeadsSerializer,AgentSerializer
+from rest_framework.permissions import IsAuthenticated
+
+
+from Api.serializers import LeadsSerializer,AgentSerializer, ProductSerializer
 
 from Api.models import Leads,Agent,Products
 
@@ -69,8 +75,26 @@ class LeadViewSet(viewsets.ViewSet):
 
 
 
+class ProductViewSet(viewsets.ViewSet):
 
 
+    def product_list(self,request):
+
+        queryset=Products.objects.all()
+        serializer=ProductSerializer(queryset,many=True)
+        return Response(serializer.data)
+
+    def create_product(self,request):
+        
+        
+
+        serializer=ProductSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'Product Created'},status=status.HTTP_201_CREATED)
+
+        return Response({'message':'Wrong Data'},status=status.HTTP_400_BAD_REQUEST)
 
 
 
